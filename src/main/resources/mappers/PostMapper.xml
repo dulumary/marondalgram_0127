@@ -23,6 +23,21 @@
  		)
 	
 	</insert>
+	
+	<select id="selectPostList" resultType="com.marondal.marondalgram.post.model.Post">
+		SELECT 
+			`id`
+			, `userId`
+ 			, `userName`
+ 			, `content`
+ 			, `imagePath`
+ 			, `createdAt`
+ 			, `updatedAt`
+		FROM
+			`post`
+		ORDER BY `id` DESC
+	
+	</select>
 
 
 </mapper>
