@@ -103,8 +103,8 @@
 						
 						<!-- 댓글 입력 -->
 						<div class="d-flex mt-2 border-top">
-							<input type="text" class="form-control border-0 ">
-							<button class="btn btn-info ml-2 commentBtn">게시</button>
+							<input type="text" class="form-control border-0 bin" id="commentInput${post.id }">
+							<button class="btn btn-info ml-2 commentBtn" data-post-id="${post.id }">게시</button>
 						</div>
 						<!-- 댓글 입력 -->
 					</div>
@@ -162,6 +162,32 @@
 					error:function() {
 						alert("글쓰기 에러");
 					}
+				});
+				
+			});
+			
+			$(".commentBtn").on("click", function() {
+				// postId, content
+				let postId = $(this).data("post-id");
+				// "#commentInput5"
+				let content = $("#commentInput" + postId).val();
+				
+				
+				$.ajax({
+					type:"post",
+					url:"/post/comment/create",
+					data:{"postId":postId, "content":content},
+					success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("댓글 작성 실패");
+						}
+						
+					}, error:function() {
+						alert("에러!!");
+					}
+					
 				});
 				
 			});
