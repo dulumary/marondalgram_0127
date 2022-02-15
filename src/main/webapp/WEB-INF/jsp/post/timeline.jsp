@@ -36,14 +36,14 @@
 					</div>
 				</div>
 				
-				<c:forEach var="post" items="${postList }" >
+				<c:forEach var="postDetail" items="${postList }" >
 				<!--  피드  -->
 				<div class="card border rounded mt-3">
 					<!-- 타이틀 -->
 					<div class="d-flex justify-content-between p-2 border-bottom">
 						<div>
 							<img src="https://mblogthumb-phinf.pstatic.net/20150203_225/hkjwow_1422965971196EfkMV_JPEG/%C4%AB%C5%E5%C7%C1%BB%E7_31.jpg?type=w210" width="30">
-							${post.userName }
+							${postDetail.post.userName }
 						</div>
 						<div class="more-icon" >
 							<a class="text-dark moreBtn" href="#" > 
@@ -55,13 +55,13 @@
 					</div>
 					<!--이미지 -->
 					<div>
-						<img src="${post.imagePath }" class="w-100 imageClick">
+						<img src="${postDetail.post.imagePath }" class="w-100 imageClick">
 					</div>
 					
 					<!-- 좋아요 -->
 					<div class="m-2">
 						
-						<a href="#" class="likeBtn" >
+						<a href="#" class="likeBtn" data-post-id="${postDetail.post.id }">
 							<i class="bi bi-heart heart-icon text-dark"></i>		
 						</a>
 				
@@ -71,7 +71,7 @@
 					
 					<!--  content -->
 					<div class="middle-size m-2">
-						<b>${post.userName }</b> ${post.content }
+						<b>${postDetail.post.userName }</b> ${postDetail.post.content }
 					</div>
 					
 					<!--  댓글 -->
@@ -86,25 +86,19 @@
 						
 						<!--  댓글  -->
 						<div class="middle-size m-2">
-						
+							<c:forEach var="comment" items="${postDetail.commentList }">
 							<div class="mt-1">
-								<b>김바다</b> 어쩌라고
+								<b>${comment.userName }</b> ${comment.content }
 							</div>
+							</c:forEach>
 							
-							<div class="mt-1">
-								<b>온조</b> 킹정 나도 봤음
-							</div>
-							
-							<div class="mt-1">
-								<b>남라</b> 징그러워서 못봄 ㅠㅠ
-							</div>
 						</div>
 						<!--  댓글  -->
 						
 						<!-- 댓글 입력 -->
 						<div class="d-flex mt-2 border-top">
-							<input type="text" class="form-control border-0 bin" id="commentInput${post.id }">
-							<button class="btn btn-info ml-2 commentBtn" data-post-id="${post.id }">게시</button>
+							<input type="text" class="form-control border-0 bin" id="commentInput${postDetail.post.id }">
+							<button class="btn btn-info ml-2 commentBtn" data-post-id="${postDetail.post.id }">게시</button>
 						</div>
 						<!-- 댓글 입력 -->
 					</div>
@@ -191,6 +185,29 @@
 				});
 				
 			});
+			
+			$(".likeBtn").on("click", function() {
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/like",
+					data:{"postId":postId},
+					success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("좋아요 실패");
+						}
+						
+					}, error:function() {
+						
+						alert("좋아요 에러!!");
+					}
+					
+				});
+				
+			})
 		});
 	
 	</script>

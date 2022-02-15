@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.marondal.marondalgram.post.bo.PostBO;
 import com.marondal.marondalgram.post.model.Post;
+import com.marondal.marondalgram.post.model.PostDetail;
 
 @Controller
 @RequestMapping("/post")
@@ -21,9 +22,10 @@ public class PostController {
 	@GetMapping("/timeline")
 	public String timeline(Model model) {
 		
-		List<Post> postList = postBO.getPostList();
+		List<PostDetail> postList = postBO.getPostList();
 		
 		model.addAttribute("postList", postList);
+		
 		
 		return "post/timeline";
 	}
