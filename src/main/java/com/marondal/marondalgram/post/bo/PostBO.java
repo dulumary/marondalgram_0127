@@ -11,6 +11,7 @@ import com.marondal.marondalgram.common.FileManagerService;
 import com.marondal.marondalgram.post.comment.bo.CommentBO;
 import com.marondal.marondalgram.post.comment.model.Comment;
 import com.marondal.marondalgram.post.dao.PostDAO;
+import com.marondal.marondalgram.post.like.bo.LikeBO;
 import com.marondal.marondalgram.post.model.Post;
 import com.marondal.marondalgram.post.model.PostDetail;
 
@@ -23,6 +24,9 @@ public class PostBO {
 	@Autowired
 	private CommentBO commentBO;
 	
+	@Autowired
+	private LikeBO likeBO;
+	
 	
 	public int addPost(int userId, String userName, String content, MultipartFile file) {
 		
@@ -30,7 +34,7 @@ public class PostBO {
 		return postDAO.insertPost(userId, userName, filePath, content);
 	}
 	
-	public List<PostDetail> getPostList() {
+	public List<PostDetail> getPostList(int userId) {
 		// post리스트 가져오기
 		// post 대응하는 댓글 좋아요 가져오기 
 		// post 대응하는 댓글 좋아요 데이터 구조 만들기
@@ -42,9 +46,14 @@ public class PostBO {
 			// 해당하는 post id로 댓글 가져오기 
 			List<Comment> commentList = commentBO.getCommentList(post.getId());
 			
+			int likeCount = likeBO.getLikeCount(post.getId());
+			boolean isLike = likeBO.isLike(post.getId(), userId);
+			
 			PostDetail postDetail = new PostDetail();
 			postDetail.setPost(post);
 			postDetail.setCommentList(commentList);
+			postDetail.setLikeCount(likeCount);
+			postDetail.setLike(isLike);
 			
 			postDetailList.add(postDetail);
 		}

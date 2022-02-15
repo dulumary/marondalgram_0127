@@ -61,12 +61,22 @@
 					<!-- 좋아요 -->
 					<div class="m-2">
 						
+						
 						<a href="#" class="likeBtn" data-post-id="${postDetail.post.id }">
-							<i class="bi bi-heart heart-icon text-dark"></i>		
+							<c:choose>
+								<c:when test="${postDetail.like }">
+									<i class="bi bi-heart-fill heart-icon text-danger"></i>
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-heart heart-icon text-dark"></i>	
+								</c:otherwise>
+							</c:choose>
+							
+							
 						</a>
 				
 
-						<span class="middle-size ml-1"> 좋아요 5개 </span>
+						<span class="middle-size ml-1"> 좋아요 ${postDetail.likeCount }개 </span>
 					</div>
 					
 					<!--  content -->
