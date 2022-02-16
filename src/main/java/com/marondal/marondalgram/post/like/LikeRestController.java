@@ -20,19 +20,44 @@ public class LikeRestController {
 	private LikeBO likeBO;
 	
 	@GetMapping("/post/like")
-	public Map<String, String> like(
+	public Map<String, Boolean> like(
 			@RequestParam("postId") int postId,
 			HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		int userId = (Integer)session.getAttribute("userId");
-		int count = likeBO.addLike(postId, userId);
+		boolean isLike = likeBO.like(postId, userId);
+		
+		// 좋아요 {"isLike":true}
+		// 좋아요 취소 {"isLike":false}
+		Map<String, Boolean> result = new HashMap<>();
+//		if(isLike) {
+//			result.put("isLike", true);
+//		} else {
+//			result.put("isLike", false);
+//		}
+		
+		result.put("isLike", isLike);
+		
+		return result;
+		
+	}
+	
+	@GetMapping("/post/unlike")
+	public Map<String, String> unlike(
+			@RequestParam("postId") int postId,
+			HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		int userId =  (Integer)session.getAttribute("userId");
+		
+		int count = likeBO.deleteLike(postId, userId);
 		
 		Map<String, String> result = new HashMap<>();
-		if(count == 1) {
-			result.put("result", "success");
-		} else {
+		if(count == 0) {
 			result.put("result", "fail");
+		} else {
+			result.put("result", "success");
 		}
 		
 		return result;

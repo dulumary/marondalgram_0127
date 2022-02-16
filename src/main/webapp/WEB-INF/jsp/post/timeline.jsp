@@ -46,7 +46,7 @@
 							${postDetail.post.userName }
 						</div>
 						<div class="more-icon" >
-							<a class="text-dark moreBtn" href="#" > 
+							<a class="text-dark moreBtn" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
 								<i class="bi bi-three-dots-vertical"></i> 
 							</a>
 						</div>
@@ -60,22 +60,20 @@
 					
 					<!-- 좋아요 -->
 					<div class="m-2">
-						
-						
 						<a href="#" class="likeBtn" data-post-id="${postDetail.post.id }">
-							<c:choose>
-								<c:when test="${postDetail.like }">
+						<c:choose>
+							<c:when test="${postDetail.like }">
+								
 									<i class="bi bi-heart-fill heart-icon text-danger"></i>
-								</c:when>
-								<c:otherwise>
-									<i class="bi bi-heart heart-icon text-dark"></i>	
-								</c:otherwise>
-							</c:choose>
-							
-							
+								
+							</c:when>
+							<c:otherwise>
+								
+									<i class="bi bi-heart heart-icon text-dark"></i>
+									
+							</c:otherwise>
+						</c:choose>
 						</a>
-				
-
 						<span class="middle-size ml-1"> 좋아요 ${postDetail.likeCount }개 </span>
 					</div>
 					
@@ -120,6 +118,21 @@
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      
+	      <div class="modal-body text-center">
+	        삭제하기
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+	
 	
 	<script>
 		$(document).ready(function() {
@@ -196,7 +209,9 @@
 				
 			});
 			
-			$(".likeBtn").on("click", function() {
+			$(".likeBtn").on("click", function(e) {
+				e.preventDefault();
+				
 				let postId = $(this).data("post-id");
 				
 				$.ajax({
@@ -204,11 +219,9 @@
 					url:"/post/like",
 					data:{"postId":postId},
 					success:function(data) {
-						if(data.result == "success") {
-							location.reload();
-						} else {
-							alert("좋아요 실패");
-						}
+						
+						location.reload();
+						
 						
 					}, error:function() {
 						
@@ -217,7 +230,30 @@
 					
 				});
 				
-			})
+			});
+			
+			$(".unlikeBtn").on("click", function(e) {
+				e.preventDefault();
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/unlike",
+					data:{"postId":postId},
+					success:function(data) {
+						
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("좋아요 취소 실패");
+						}
+						
+					}, error:function() {
+						alert("좋아요 취소 실패!!");
+					}
+					
+				});
+			});
 		});
 	
 	</script>
