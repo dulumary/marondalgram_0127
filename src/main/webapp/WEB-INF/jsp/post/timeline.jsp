@@ -46,7 +46,7 @@
 							${postDetail.post.userName }
 						</div>
 						<div class="more-icon" >
-							<a class="text-dark moreBtn" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
+							<a class="text-dark moreBtn" data-post-id="${postDetail.post.id }" href="#" data-toggle="modal" data-target="#exampleModalCenter"> 
 								<i class="bi bi-three-dots-vertical"></i> 
 							</a>
 						</div>
@@ -125,7 +125,7 @@
 	    <div class="modal-content">
 	      
 	      <div class="modal-body text-center">
-	        삭제하기
+	        <a href="#" id="deleteBtn"> 삭제하기 </a>
 	      </div>
 	      
 	    </div>
@@ -253,6 +253,42 @@
 					}
 					
 				});
+			});
+			
+			
+			$(".moreBtn").on("click", function(e) {
+				e.preventDefault();
+				
+				let postId = $(this).data("post-id");
+				
+				// postId 를 모달의 삭제하기 버튼에 값을 부여한다. 
+				$("#deleteBtn").data("post-id", postId);
+				
+			});
+			
+			$("#deleteBtn").on("click", function(e) {
+				e.preventDefault();
+				
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/delete",
+					data:{"postId":postId},
+					success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("삭제 실패!");
+						}
+						
+					}, error:function() {
+						alert("삭제 에러!!")
+					}
+					
+				});
+				
+				
 			});
 		});
 	

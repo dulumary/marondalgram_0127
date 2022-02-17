@@ -18,4 +18,5 @@ public interface CommentDAO {
 	
 	public List<Comment> selectCommentList(@Param("postId") int postId);
 
+	public int deleteComment(@Param("postId") int postId);
 }

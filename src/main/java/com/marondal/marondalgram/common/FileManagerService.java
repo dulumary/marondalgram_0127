@@ -60,4 +60,44 @@ public class FileManagerService {
 		return "/images/" + directoryName + file.getOriginalFilename();
 		
 	}
+	
+	// 파일 삭제 
+	public static void removeFile(String filePath) {
+		
+		if(filePath == null) {
+			logger.error("FileManagerService::removeFile - 삭제할 파일 없음");
+			return ;
+		}
+		
+		// 삭제할 파일 경로 
+		// filePath : /images/2_981310982/test.png
+		// 실제 파일 경로 : D:\\김인규 강사\\web\\0927\\springProject\\upload\\image\\2_981310982/test.png
+		
+		String realFilePath = FILE_UPLOAD_PATH + filePath.replace("/images/", "");
+		
+		// 파일지우기 
+		Path path = Paths.get(realFilePath);
+		// 파일이 있는지 확인
+		if(Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				logger.error("FileManagerService::removeFile - 파일 삭제 실패");
+				e.printStackTrace();
+			}
+		}
+		
+		// 디렉토리 삭제 (폴더)
+		// 실제 디렉토리 경로 : D:\\김인규 강사\\web\\0927\\springProject\\upload\\image\\2_981310982
+		path = path.getParent();
+	
+		if(Files.exists(path)) {
+			try {
+				Files.delete(path);
+			} catch (IOException e) {
+				logger.error("FileManagerService::removeFile - 디렉토리 삭제 실패");
+				e.printStackTrace();
+			}
+		}
+	}
 }
