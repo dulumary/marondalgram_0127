@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.marondal.marondalgram.post.bo.PostBO;
 import com.marondal.marondalgram.post.model.PostDetail;
-
+// 수정
 @Controller
 @RequestMapping("/post")
 public class PostController {
