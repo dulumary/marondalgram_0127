@@ -13,6 +13,7 @@ public class EncryptUtils {
 			
 			// asdf
 			// [00000000, 00000000, 00000000, 000000000] 
+			// 배포 연습 주석
 			byte[] bytes = message.getBytes();
 			md.update(bytes);
 			
