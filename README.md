@@ -45,13 +45,13 @@
 ### 🎆 데모 🎆
 
  💎 회원 가입 및 로그인 
- ![user](demogif/user.gif)
+ ![user](demo/user.gif)
 
  💎 이미지 첨부 글쓰기
- ![user](demogif/post.gif)
+ ![user](demo/post.gif)
  
   💎 댓글쓰기
- ![user](demogif/comment.gif)
+ ![user](demo/comment.gif)
  
   💎 좋아요
  ![user](demogif/like.gif)
